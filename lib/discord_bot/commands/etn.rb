@@ -2,10 +2,17 @@ module DiscordBot
   module Commands
     # Outputs the current ETN prices in a neat table
     module Etn
-      CURRENT_ALT_COINS = %w[BTC LTC DOGE USDT].freeze
+      CURRENT_ALT_COINS = %w[BTC USDT LTC DOGE].freeze
 
       extend Discordrb::Commands::CommandContainer
-      command(:etn, description: "Gathers the current price of etn on cryptopia") do |event|
+
+      bucket(:prices, limit: 1, time_span: 60)
+
+      command(
+        :etn,
+        bucket: :prices,
+        description: "Gathers the current price of etn on cryptopia"
+      ) do |event|
         event << output_message
       end
 
